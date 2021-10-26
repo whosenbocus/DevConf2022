@@ -20,7 +20,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<ProductReadDto>> GetPlatforms()
+    public ActionResult<IEnumerable<ProductReadDto>> GetProducts()
     {
 
         var productItems = _repository.GetAllProducts();

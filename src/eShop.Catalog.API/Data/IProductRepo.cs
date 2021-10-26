@@ -1,14 +1,9 @@
-using eShop.Catalog.API.Models;
-
-namespace eShop.Catalog.API.Data
+public interface IProductRepo
 {
-    public interface IProductRepo
-    {
-        bool SaveChanges();
+    bool SaveChanges();
 
-        IEnumerable<Product> GetAllProducts();
-        Product GetProductById(int id);
-        void CreateProduct(Product product);
-        void DecreaseProductQuantity(int id);
-    }
+    IEnumerable<Product> GetAllProducts();
+    Product GetProductById(int id);
+    void CreateProduct(Product product);
+    void DecreaseProductQuantity(int id, int Amount);
 }

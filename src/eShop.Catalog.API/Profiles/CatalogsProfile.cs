@@ -1,15 +1,10 @@
 using AutoMapper;
-using eShop.Catalog.API.Dtos;
-using eShop.Catalog.API.Models;
 
-namespace eShop.Catalog.API.Profiles
+public class CatalogsProfile : Profile
 {
-    public class CatalogsProfile : Profile
+    public CatalogsProfile()
     {
-        public CatalogsProfile()
-        {
-            CreateMap<Product,ProductReadDto>();
-            CreateMap<ProductCreateDto,Product>();
-        }
+        CreateMap<Product,ProductReadDto>();
+        CreateMap<ProductCreateDto,Product>();
     }
 }

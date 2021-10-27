@@ -1,7 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/[controller]")]
+[Route("api/Catalog/[controller]")]
 [ApiController]
 public class ProductController : ControllerBase
 {

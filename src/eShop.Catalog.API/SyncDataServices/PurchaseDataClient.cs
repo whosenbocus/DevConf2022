@@ -23,6 +23,6 @@ public class PurchaseDataClient : IPurchaseDataClient
                 Encoding.UTF8,
                 "application/json");
                 
-        await _httpClient.PostAsync($"{_configuration["BasketService"]}",httpContent);
+        await _httpClient.PostAsync($"{_configuration["BasketService"]}/api/Basket/Product/",httpContent);
     }
 }

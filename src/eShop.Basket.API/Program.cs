@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IProductDataClient,ProductDataClient>();
 builder.Services.AddHttpClient<IProductDataClient,ProductDataClient>(client => 
 {
-    client.BaseAddress = new Uri(builder.Configuration["eShop.Catalog.API"]);
+    client.BaseAddress = new Uri(builder.Configuration["eShop-Catalog-API"]);
 });
 
 

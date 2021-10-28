@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IPurchaseDataClient,PurchaseDataClient>();
 builder.Services.AddHttpClient<IPurchaseDataClient,PurchaseDataClient>(client => 
 {
-    client.BaseAddress = new Uri(builder.Configuration["eShop.Basket.API"]);
+    client.BaseAddress = builder.Configuration.GetServiceUri("eShop-Basket-API");
 });
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opt =>

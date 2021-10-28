@@ -4,7 +4,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddHttpClient<IProductDataClient, ProductDataClient>();
+builder.Services.AddScoped<IProductDataClient,ProductDataClient>();
+builder.Services.AddHttpClient<IProductDataClient,ProductDataClient>(client => 
+{
+    client.BaseAddress = new Uri(builder.Configuration["eShop.Catalog.API"]);
+});
 
 
 builder.Services.AddDbContext<AppDbContext>(opt=>opt.UseInMemoryDatabase("InMem"));
@@ -12,7 +16,6 @@ builder.Services.AddScoped<IPurchaseRepo,PurchaseRepo>();
 builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<IProductDataClient,ProductDataClient>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

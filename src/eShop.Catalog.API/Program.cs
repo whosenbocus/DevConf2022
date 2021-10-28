@@ -2,14 +2,18 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpClient<IPurchaseDataClient, PurchaseDataClient>();
+
+builder.Services.AddScoped<IPurchaseDataClient,PurchaseDataClient>();
+builder.Services.AddHttpClient<IPurchaseDataClient,PurchaseDataClient>(client => 
+{
+    client.BaseAddress = new Uri(builder.Configuration["eShop.Basket.API"]);
+});
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseInMemoryDatabase("InMem"));
 builder.Services.AddScoped<IProductRepo,ProductRepo>();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<IPurchaseDataClient,PurchaseDataClient>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

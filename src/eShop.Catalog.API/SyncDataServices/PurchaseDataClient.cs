@@ -22,7 +22,6 @@ public class PurchaseDataClient : IPurchaseDataClient
                 JsonSerializer.Serialize(product),
                 Encoding.UTF8,
                 "application/json");
-                
-        await _httpClient.PostAsync($"{_configuration["BasketService"]}/api/Basket/Product/",httpContent);
+        await _httpClient.PostAsync($"/api/Basket/Product/",httpContent);
     }
 }

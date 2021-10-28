@@ -13,6 +13,6 @@ public class ProductDataClient : IProductDataClient
     }
     public async Task DecreaseProduct(int productId, int amount)
     {
-        var response = await _httpClient.PutAsync($"{_configuration["CatalogService"]}/api/Catalog/Product/{productId}?Amount={amount}",null);
+        var response = await _httpClient.PutAsync($"/api/Catalog/Product/{productId}?Amount={amount}",null);
     }
 }

@@ -7,6 +7,6 @@
 name: eshop
 services:
 - name: eshop-basket-api
-  project: eShop.Basket.API/eShop.Basket.API.csproj
+  project: ../../src/eShop.Basket.API/eShop.Basket.API.csproj
 - name: eshop-catalog-api
-  project: eShop.Catalog.API/eShop.Catalog.API.csproj
+  project: ../../src/eShop.Catalog.API/eShop.Catalog.API.csproj

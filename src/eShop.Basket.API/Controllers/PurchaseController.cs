@@ -8,16 +8,19 @@ public class PurchaseController : ControllerBase
     private readonly IPurchaseRepo _repository;
     private readonly IMapper _mapper;
     private readonly IProductDataClient _productDataClient;
+    private readonly IMessageBusClient _messageBusClient;
 
     public PurchaseController(
         IPurchaseRepo repository,
         IMapper mapper,
-        IProductDataClient productDataClient
+        IProductDataClient productDataClient,
+        IMessageBusClient messageBusClient
         )
     {
         _repository = repository;
         _mapper = mapper;
         _productDataClient = productDataClient;
+        _messageBusClient = messageBusClient;
     }
 
     [HttpGet]
@@ -61,7 +64,8 @@ public class PurchaseController : ControllerBase
         _repository.CreatePurchase(productId, purchase);
         _repository.SaveChanges();
 
-        await _productDataClient.DecreaseProduct(product.ExternalID,purchaseDto.Quantity);
+        //await _productDataClient.DecreaseProduct(product.ExternalID,purchaseDto.Quantity);
+        _messageBusClient.PublishPurchase(product.ExternalID,purchaseDto.Quantity);
 
         var PurchaseReadDto = _mapper.Map<PurchaseReadDto>(purchase);
 

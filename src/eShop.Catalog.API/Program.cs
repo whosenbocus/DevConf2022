@@ -8,11 +8,15 @@ builder.Services.AddHttpClient<IPurchaseDataClient,PurchaseDataClient>(client =>
 {
     client.BaseAddress = builder.Configuration.GetServiceUri("eShop-Basket-API");
 });
+builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 // Add services to the container.
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseInMemoryDatabase("InMem"));
 builder.Services.AddScoped<IProductRepo,ProductRepo>();
 builder.Services.AddControllers();
+builder.Services.AddHostedService<MessageBusSubscriber>();
+
+builder.Services.AddSingleton<IEventProcessor, EventProcessor>(); 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

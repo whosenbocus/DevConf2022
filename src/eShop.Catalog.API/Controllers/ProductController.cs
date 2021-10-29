@@ -8,16 +8,19 @@ public class ProductController : ControllerBase
     private readonly IProductRepo _repository;
     private readonly IMapper _mapper;
     private readonly IPurchaseDataClient _purchaseDataClient;
+    private readonly IMessageBusClient _messageBusClient;
 
     public ProductController(
         IProductRepo repository,
         IMapper mapper,
-        IPurchaseDataClient purchaseDataClient
+        IPurchaseDataClient purchaseDataClient,
+        IMessageBusClient messageBusClient
         )
     {
         _repository = repository;
         _mapper = mapper;
         _purchaseDataClient = purchaseDataClient;
+        _messageBusClient = messageBusClient;
     }
 
     [HttpGet]
@@ -49,7 +52,9 @@ public class ProductController : ControllerBase
 
         var productReadDto = _mapper.Map<ProductReadDto>(productModel);
 
-        await _purchaseDataClient.CreateProduct(productReadDto.Id,productReadDto.Name);
+        //await _purchaseDataClient.CreateProduct(productReadDto.Id,productReadDto.Name);
+
+        _messageBusClient.PublishNewProduct(productReadDto.Id,productReadDto.Name);
 
         return CreatedAtRoute(nameof(GetProductById), new { Id = productReadDto.Id}, productCreateDto);
     }

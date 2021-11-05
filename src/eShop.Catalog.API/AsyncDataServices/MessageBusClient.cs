@@ -13,8 +13,8 @@ public class MessageBusClient : IMessageBusClient
         _configuration = configuration;
         var factory = new ConnectionFactory()
         {
-            HostName = _configuration["RabbitMQHost"],
-            Port = int.Parse(_configuration["RabbitMQPort"])
+            HostName = _configuration.GetServiceUri("rabbit","mq_binding").Host,
+            Port = _configuration.GetServiceUri("rabbit","mq_binding").Port
         };
         try
         {

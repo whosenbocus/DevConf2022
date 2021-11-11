@@ -6,6 +6,8 @@
 #
 name: eshop
 services:
+- name: eshop-ui
+  project: ../../src/eShop.UI/eShop.UI.csproj
 - name: eshop-basket-api
   project: ../../src/eShop.Basket.API/eShop.Basket.API.csproj
 - name: eshop-catalog-api
@@ -13,8 +15,8 @@ services:
 - name: rabbit
   image: rabbitmq:3.9-management
   bindings:
-    - name: mq_binding
-      port: 5672
-      protocol: rabbitmq
-    - name: mui_binding
-      port: 15672
+  - name: mq_binding
+    port: 5672
+    protocol: rabbitmq
+  - name: mui_binding
+    port: 15672

@@ -1,0 +1,47 @@
+@page "/Product/{id}"
+
+<PageTitle>Product</PageTitle>
+
+<h1>Product</h1>
+
+
+@if (product == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <td>Id</td>
+            <td>@product.Id</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>@product.Name</td>
+        </tr>
+        <tr>
+            <td>Quantity</td>
+            <td>@product.Quantity</td>
+        </tr>
+        <tr>
+            <td>Supplier</td>
+            <td>@product.Supplier</td>
+        </tr>
+    </table>
+}
+
+@code {
+
+    [Inject]
+    public ICatalogService CatalogService { get; set; }
+    private ProductRead product  { get; set; }
+
+    [Parameter]
+    public string Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await CatalogService.GetProductByID(Id);
+    }
+}

@@ -1,0 +1,49 @@
+@page "/Products"
+
+<PageTitle>Products</PageTitle>
+
+<h1>Products</h1>
+
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Supplier</th>
+                <th>details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Name</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.Supplier</td>
+                    <td><a href="../product/@product.Id">details</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    [Inject]
+    public ICatalogService CatalogService { get; set; }
+    private IEnumerable<ProductRead> products  { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = (await CatalogService.GetProducts()).ToList();
+    }
+}

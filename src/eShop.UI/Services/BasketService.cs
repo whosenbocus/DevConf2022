@@ -8,9 +8,9 @@ public class BasketService : IBasketService
     {
         _http = http;
     }
-    public async Task CreatePurchaseForProduct(string productId, PurchaseCreate purchase)
+    public async Task<PurchaseRead> CreatePurchaseForProduct(string productId, PurchaseCreate purchase)
     {
-        await _http.PostJsonAsync($"api/Basket/Purchase?productId={productId}",purchase);
+        return await _http.PostJsonAsync<PurchaseRead>($"api/Basket/Purchase?productId={productId}",purchase);
     }
 
     public async Task<IEnumerable<BasketProductRead>> GetProducts()
@@ -18,13 +18,17 @@ public class BasketService : IBasketService
         return await _http.GetJsonAsync<IEnumerable<BasketProductRead>>("api/Basket/Product");
     }
 
-    public async Task<PurchaseRead> GetPurchasesForProduct(string productId)
+    public async Task<IEnumerable<PurchaseRead>> GetPurchasesForProduct(string productId)
     {
-        return await _http.GetJsonAsync<PurchaseRead>($"api/Basket/Purchase?productId={productId}");
+        return await _http.GetJsonAsync<IEnumerable<PurchaseRead>>($"api/Basket/Purchase?productId={productId}");
     }
 
-    public async Task<PurchaseRead> GetPurchasesForProduct(string productId, string purchaseId)
+    public async Task<IEnumerable<PurchaseRead>> GetPurchasesForProduct(string productId, string purchaseId)
     {
-        return await _http.GetJsonAsync<PurchaseRead>($"api/Basket/Purchase/{purchaseId}?productId={productId}");
+        PurchaseRead purchaseRead = await _http.GetJsonAsync<PurchaseRead>($"api/Basket/Purchase/{purchaseId}?productId={productId}");
+        return new List<PurchaseRead>()
+        {
+            purchaseRead
+        };
     }
 }

@@ -1,0 +1,80 @@
+@page "/Purchase/Details"
+@page "/Purchase/Details/{strPurchaseId}/{strProductId}"
+
+<PageTitle>Purchase</PageTitle>
+
+<h1>Purchase</h1>
+
+<label for="name">Product Id: </label>
+<input type="number" @bind-value="ProductId"/>
+
+<label for="name">Purchase Id: </label>
+<input type="number" @bind-value="PurchaseId"/>
+
+<button class="btn btn-primary" @onclick="Filter">Search</button> 
+
+
+<hr>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Product Id</th>
+            <th>Quantity</th>
+            <th>Buyer</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var purchase in purchases)
+        {
+            <tr>
+                <td>@purchase.Id</td>
+                <td>@purchase.ProductId</td>
+                <td>@purchase.Quantity</td>
+                <td>@purchase.Buyer</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code
+{
+    [Parameter]  
+    public int? PurchaseId { get; set; }
+    [Parameter]  
+    public int? ProductId { get; set; }
+
+
+    [Parameter]  
+    public string strPurchaseId { get; set; }
+    [Parameter]  
+    public string strProductId { get; set; }
+
+
+    [Inject]
+    public IBasketService BasketService { get; set; }
+
+    private List<PurchaseRead> purchases  = new List<PurchaseRead>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(strPurchaseId != null && strProductId != null)
+        purchases = (await BasketService.GetPurchasesForProduct(strProductId,strPurchaseId)).ToList();
+    }
+
+    private async void Filter()
+    {
+
+        purchases.Clear();
+        if (PurchaseId == null)
+        {
+            purchases = (await BasketService.GetPurchasesForProduct(ProductId.ToString())).ToList();
+        }
+        else
+        {
+            purchases = (await BasketService.GetPurchasesForProduct(ProductId.ToString(),PurchaseId.ToString())).ToList();
+        }
+        StateHasChanged();
+    }
+}

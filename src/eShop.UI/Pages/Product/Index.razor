@@ -1,9 +1,11 @@
-@page "/Products"
+@page "/Product/Index"
 
 <PageTitle>Products</PageTitle>
 
 <h1>Products</h1>
 
+<a href="Product/Create" class="btn btn-primary">Create</a>
+@* <button class="btn btn-primary" @onclick="NavigateToCreate">Click me</button> *@
 
 @if (products == null)
 {
@@ -29,7 +31,7 @@ else
                     <td>@product.Name</td>
                     <td>@product.Quantity</td>
                     <td>@product.Supplier</td>
-                    <td><a href="../product/@product.Id">details</a></td>
+                    <td><a href="../Product/Details/@product.Id">details</a></td>
                 </tr>
             }
         </tbody>
@@ -46,4 +48,9 @@ else
     {
         products = (await CatalogService.GetProducts()).ToList();
     }
+
+        @* private void NavigateToCreate()
+    {
+        currentCount++;
+    } *@
 }

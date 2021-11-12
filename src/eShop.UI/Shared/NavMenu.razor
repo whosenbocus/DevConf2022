@@ -16,13 +16,13 @@
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Products">
+            <NavLink class="nav-link" href="Product/Index">
                 <span class="oi oi-box" aria-hidden="true"></span> Product
             </NavLink>
         </div>
         
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="purchase">
+            <NavLink class="nav-link" href="Purchase/Index">
                 <span class="oi oi-cart" aria-hidden="true"></span> Purchase
             </NavLink>
         </div>
@@ -33,7 +33,7 @@
 @code {
     private bool collapseNavMenu = true;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {

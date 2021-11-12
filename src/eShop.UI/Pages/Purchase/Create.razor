@@ -1,0 +1,88 @@
+@page "/Purchase/Create"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Purchases</PageTitle>
+
+<h1>Create</h1>
+
+<EditForm Model="@Model" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Name: </label>
+
+        <InputSelect id="department" Class="form-control" @bind-Value="ProductId">
+            @foreach (var BasketProduct in productBaskets)
+            {
+                <option value="@BasketProduct.ProductId">@BasketProduct.Name</option>
+            }
+        </InputSelect>
+
+    </div>
+
+    <div class="form-group">
+        <label for="Quantity">Quantity: </label>
+        <InputNumber autocomplete="off" Id="Quantity" Class="form-control" @bind-Value="@Model.Quantity"></InputNumber>
+        <ValidationMessage For="@(() => Model.Quantity)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Buyer">Buyer: </label>
+        <InputText autocomplete="off" Id="Supplier" Class="form-control" @bind-Value="@Model.Buyer"></InputText>
+        <ValidationMessage For="@(() => Model.Buyer)" />
+    </div>
+    <p></p>
+    <button class="btn btn-primary" type="submit">Save</button>
+
+</EditForm>
+
+@code
+{
+    [Inject]
+    public IBasketService BasketService { get; set; }
+
+    [Inject]
+    public ICatalogService CatalogService { get; set; }
+
+    public string ProductId { get; set; }
+
+    private PurchaseCreate Model = new PurchaseCreate();
+    public List<ProductBasket> productBaskets = new List<ProductBasket>();
+    protected async void HandleValidSubmit()
+    {
+        Console.WriteLine($"--> {ProductId}");
+        PurchaseRead purchaseRead =  await BasketService.CreatePurchaseForProduct(ProductId,Model);
+        NavigationManager.NavigateTo($"Purchase/Details/{purchaseRead.Id}/{purchaseRead.ProductId}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        IEnumerable<ProductRead> products = (await CatalogService.GetProducts()).ToList();
+
+        IEnumerable<BasketProductRead> BasketProducts = (await BasketService.GetProducts()).ToList();
+
+        foreach(var BasketProduct in BasketProducts)
+        {
+            string ProductName = products.FirstOrDefault(x => x.Id == BasketProduct.ExternalID).Name;
+
+            productBaskets.Add(new ProductBasket()
+            {
+                ProductId = BasketProduct.Id,
+                ExternalId = BasketProduct.ExternalID,
+                Name = ProductName
+            });
+        }
+
+        ProductId = productBaskets.First().ProductId.ToString();
+        
+    }
+
+    public class ProductBasket
+    {
+        public int ProductId { get; set; }
+        public int ExternalId { get; set; }
+        public string Name { get; set; }
+    }
+
+}

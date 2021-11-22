@@ -1,3 +1,4 @@
+using Dapr.Client;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -5,15 +6,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddHttpClient<ICatalogService,CatalogService>(client => 
-{
-    client.BaseAddress = builder.Configuration.GetServiceUri("eShop-Catalog-API");
-});
 
-builder.Services.AddHttpClient<IBasketService,BasketService>(client => 
-{
-    client.BaseAddress = builder.Configuration.GetServiceUri("eShop-Basket-API");
-});
+
+// builder.Services.AddHttpClient<ICatalogService,CatalogService>(client => 
+// {
+//     client.BaseAddress = builder.Configuration.GetServiceUri("eShop-Catalog-API");
+// });
+
+builder.Services.AddSingleton<ICatalogService, CatalogService>(
+        _ => new CatalogService(DaprClient.CreateInvokeHttpClient("eShop-Catalog-API")));
+
+// builder.Services.AddHttpClient<IBasketService,BasketService>(client => 
+// {
+//     client.BaseAddress = builder.Configuration.GetServiceUri("eShop-Basket-API");
+// });
+
+builder.Services.AddSingleton<IBasketService, BasketService>(
+        _ => new BasketService(DaprClient.CreateInvokeHttpClient("eShop-Basket-API")));
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();

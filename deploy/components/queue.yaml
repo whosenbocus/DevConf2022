@@ -39,3 +39,14 @@ spec:
 #     value: localhost:6379
 #   - name: redisPassword
 #     value: ""
+
+# apiVersion: dapr.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: eshopqueue
+# spec:
+#   type: pubsub.azure.servicebus
+#   version: v1
+#   metadata:
+#   - name: connectionString
+#     value: "Endpoint=sb://{ServiceBusNamespace}.servicebus.windows.net/;SharedAccessKeyName={PolicyName};SharedAccessKey={Key};EntityPath={ServiceBus}"

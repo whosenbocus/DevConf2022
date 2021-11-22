@@ -1,0 +1,41 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: eshopqueue
+spec:
+  type: pubsub.rabbitmq
+  version: v1
+  metadata:
+  - name: host
+    value: "amqp://localhost:5672"
+  - name: durable
+    value: "true"
+scopes:
+- eshop-basket-api
+- eshop-catalog-api
+---
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: eshopqueue
+spec:
+  type: bindings.rabbitmq
+  version: v1
+  metadata:
+  - name: queueName
+    value: eshop
+  - name: host
+    value: "amqp://localhost:5672"
+
+# apiVersion: dapr.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: eshopqueue
+# spec:
+#   type: pubsub.redis
+#   version: v1
+#   metadata:
+#   - name: redisHost
+#     value: localhost:6379
+#   - name: redisPassword
+#     value: ""

@@ -5,6 +5,11 @@
 #    https://aka.ms/AA7q20u
 #
 name: eshop
+extensions:
+- name: dapr
+  app-ssl: "true"
+  components-path: "../components/"
+  log-level: debug
 services:
 - name: eshop-ui
   project: ../../src/eShop.UI/eShop.UI.csproj

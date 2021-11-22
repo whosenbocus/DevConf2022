@@ -65,7 +65,7 @@ public class PurchaseController : ControllerBase
         _repository.SaveChanges();
 
         //await _productDataClient.DecreaseProduct(product.ExternalID,purchaseDto.Quantity);
-        _messageBusClient.PublishPurchase(product.ExternalID,purchaseDto.Quantity);
+        await _messageBusClient.PublishPurchase(product.ExternalID,purchaseDto.Quantity);
 
         var PurchaseReadDto = _mapper.Map<PurchaseReadDto>(purchase);
 

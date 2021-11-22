@@ -1,4 +1,6 @@
+using System.Text.Json;
 using AutoMapper;
+using Dapr;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/Catalog/[controller]")]
@@ -54,17 +56,19 @@ public class ProductController : ControllerBase
 
         //await _purchaseDataClient.CreateProduct(productReadDto.Id,productReadDto.Name);
 
-        _messageBusClient.PublishNewProduct(productReadDto.Id,productReadDto.Name);
+        await _messageBusClient.PublishNewProduct(productReadDto.Id,productReadDto.Name);
 
         return CreatedAtRoute(nameof(GetProductById), new { Id = productReadDto.Id}, productCreateDto);
     }
 
-    [HttpPut("{id}", Name = "DecreaseProductById")]
-    public ActionResult<ProductReadDto> DecreaseProductById(int id, int Amount)
+    [Topic("eshopqueue","Purchase")]
+    [HttpPost("Purchase")]
+    public ActionResult<ProductReadDto> DecreaseProductById(ProductDecrease productDecrease)
     {
-        _repository.DecreaseProductQuantity(id, Amount);
+        Console.WriteLine($"--> Receiving Purchase {JsonSerializer.Serialize(productDecrease)}");
+        _repository.DecreaseProductQuantity(productDecrease.productId, productDecrease.amount);
         _repository.SaveChanges();
-        var productItem = _repository.GetProductById(id);
+        var productItem = _repository.GetProductById(productDecrease.productId);
         if (productItem != null)
         {
             return Ok(_mapper.Map<ProductReadDto>(productItem));

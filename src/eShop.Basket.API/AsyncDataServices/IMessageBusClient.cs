@@ -1,4 +1,4 @@
 public interface IMessageBusClient
 {
-    void PublishPurchase(int productId, int amount);
+    Task PublishPurchase(int productId, int amount);
 }

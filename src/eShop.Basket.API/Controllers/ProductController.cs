@@ -1,4 +1,6 @@
+using System.Text.Json;
 using AutoMapper;
+using Dapr;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/Basket/[controller]")]
@@ -28,9 +30,11 @@ public class ProductController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<ProductReadDto>>(productItems));
     }
 
-    [HttpPost]
+    [Topic("eshopqueue","Product")]
+    [HttpPost("Product")]
     public ActionResult CreateProduct(ProductCreateDto productDto)
     {
+        Console.WriteLine($"--> Receiving Product {JsonSerializer.Serialize(productDto)}");
         var product = _mapper.Map<Product>(productDto);
         _repository.CreateProduct(product);
         _repository.SaveChanges();

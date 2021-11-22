@@ -13,10 +13,10 @@ builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseInMemoryDatabase("InMem"));
 builder.Services.AddScoped<IProductRepo,ProductRepo>();
-builder.Services.AddControllers();
-builder.Services.AddHostedService<MessageBusSubscriber>();
+builder.Services.AddControllers().AddDapr();
+//builder.Services.AddHostedService<MessageBusSubscriber>();
 
-builder.Services.AddSingleton<IEventProcessor, EventProcessor>(); 
+//builder.Services.AddSingleton<IEventProcessor, EventProcessor>(); 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -31,12 +31,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
+//app.UseHttpsRedirection();
+app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCloudEvents();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapSubscribeHandler();
+});
 PrepDb.PrepPopulation(app);
 
 app.Run();

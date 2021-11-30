@@ -5,6 +5,9 @@
 #    https://aka.ms/AA7q20u
 #
 name: eshop
+registry:
+  name: eshopdevconf.azurecr.io
+  pullSecret: acr-secret
 extensions:
 - name: dapr
   app-ssl: "true"
@@ -17,14 +20,14 @@ services:
   project: ../../src/eShop.Basket.API/eShop.Basket.API.csproj
 - name: eshop-catalog-api
   project: ../../src/eShop.Catalog.API/eShop.Catalog.API.csproj
-- name: rabbit
-  image: rabbitmq:3.9-management
-  bindings:
-  - name: mq_binding
-    port: 5672
-    protocol: rabbitmq
-  - name: mui_binding
-    port: 15672
+# - name: rabbit
+#   image: rabbitmq:3.9-management
+#   bindings:
+#   - name: mq_binding
+#     port: 5672
+#     protocol: rabbitmq
+#   - name: mui_binding
+#     port: 15672
 # - name: redis
 #   image: redis
 #   bindings:

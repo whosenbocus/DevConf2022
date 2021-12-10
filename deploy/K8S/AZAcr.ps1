@@ -12,6 +12,8 @@ param (
     $PullSecret,
     [switch]
     $CreateServicePrincipal,
+    [switch]
+    $AKSCredential,
     [string]
     $PrincipalName = "acr-service-principal"
 )
@@ -46,4 +48,8 @@ elseif ($PullSecret)
     }
     kubectl delete secret/acr-secret
     kubectl create secret docker-registry acr-secret --docker-server=$ACRName.azurecr.io --docker-username=$USER_NAME --docker-password=$PASSWORD
+}
+elseif($AKSCredential)
+{
+    az aks get-credentials --resource-group DevConf --name DevConf2022
 }
